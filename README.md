@@ -37,6 +37,10 @@ INT VAR EQ NUM ADD VAR SEMICOLON
 STRING VAR EQ CONST SEMICOLON
 ```
 
+The team which implemented this project is composed by:
+
+@autumn-Days (me) @gutavo-codes and @Thalles 
+
 ## 2. Regular expressions used
 
 1. INT: int
