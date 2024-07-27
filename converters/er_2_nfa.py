@@ -1,4 +1,4 @@
-import NFA
+from ..automata_and_re import NFA
 
 """
 It receives as input a character that make part of a regular expression
@@ -6,7 +6,7 @@ and it says if it is really an input symboll or just a character that
 makes part of the syntax of a regular expression, like "[", or "+"
 """
 def isOperand(er_symboll):
-
+	return
 """
 The three next functions express the Thompson's algorithm
 """
@@ -24,6 +24,5 @@ def prepareList(er, resultingNFA, stateCounter):
 	for i in range(len(er)):
 		if isOperand(er[i]) :
 			resultingNFA.addInputStrAlphabet(er[i])
-            resutingNFA
 		else :
 			lista_er.append(er[i])
