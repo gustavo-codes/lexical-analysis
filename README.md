@@ -51,12 +51,44 @@ STRING VAR EQ CONST SEMICOLON
 
 ## 3. On the structure of the folder and files
 
+- `automata_and_re`: Provide all the automatas and regular expressions needed.
+    1. `NFA.py`: Defines a class for implementing a NFA
+    2. `DFA.py`: Defines a class for implementing a DFA
+    3. `re.txt`: all the regular expressions for each token of "A"
+
 - `converters`: This directory has all the functions regarding the translations necessary for the implementation of the lexical analyser. Such translations are listed bellow:
-    1. regular expressions to NFA (`er_2_nfa.py`):
-        - receives all the regular expressions and return a single NFA for it.
+    1. regular expressions to NFA (defined on `er_2_nfa.py`):
+        - receives all the regular expressions that are defined on `re.txt` and return a single NFA for it.
         - The NFA itself is them written into a file `NFA.txt` that describes it.
         - It make such convertion using the Thompson's algorithm
-    2. NFA to DFA: Receives a NFA and returns a DFA (`er_2_dfa.py`)
-- `lexicalAnalyserA.py`: Calls the 
+    1. NFA to DFA: 
+        - Receives a NFA and returns a DFA (defined on `er_2_dfa.py`)
+        - The resulting DFA is then written into `DFA.txt`
+- `lexicalAnalyserA.py`:
+    - It executs the lexical analyser itself
+    - If `DFA.txt` is not empty, then it uses the DFA defined there.
+    - If `DFA.txt` is empty, recursively calls the translation algorithms
+
+## 4.On the classes used
+
+1. NFA(q, sigma, delta, q0, f)
+    - Defined on `automata_and_re/NFA.py`
+    - `q` : `[INT]`
+        - is a list of integers that represent the set of all the states of the NFA
+        - each state is represented by a number
+    - `sigma`: [`CHAR`]
+        - is a list of characters that represent the alphabet recognized by the NFA
+    - `delta`:
+        - > {INT:{CHAR:[INT]} <br>
+          > outgoing state : input symbol:[incoming states]
+        - Defines the transiction function.
+    - `q0`: `INT`
+        - an intenger that represents the initial state of the NFA
+    - `f`: `[INT]`
+        - A list of integers that represent the set of final states
+2. `DFA.py`
+    - Defined on `Defined on `automata_and_re/DFA.py`
+    - It is basically the NFA, but with small changes to the transiction function
+    
 
 ---
