@@ -1,0 +1,10 @@
+TOKEN;RE
+INT;int
+CONST;string
+ID;(_|[a-z]|[A-Z])(_|[a-z]|[A-Z]|[0-9])*
+EQ;=
+NUM;[0-9]+
+ADD;+
+SUB;-
+MULT;*
+SEMICOLON;;

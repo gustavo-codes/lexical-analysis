@@ -54,11 +54,11 @@ STRING VAR EQ CONST SEMICOLON
 - `automata_and_re`: Provide all the automatas and regular expressions needed.
     1. `NFA.py`: Defines a class for implementing a NFA
     2. `DFA.py`: Defines a class for implementing a DFA
-    3. `re.txt`: all the regular expressions for each token of "A"
+    3. `re.csv`: all the regular expressions for each token of "A"
 
 - `converters`: This directory has all the functions regarding the translations necessary for the implementation of the lexical analyser. Such translations are listed bellow:
     1. regular expressions to NFA (defined on `er_2_nfa.py`):
-        - receives all the regular expressions that are defined on `re.txt` and return a single NFA for it.
+        - receives all the regular expressions that are defined on `re.csv` and return a single NFA for it.
         - The NFA itself is them written into a file `NFA.txt` that describes it.
         - It make such convertion using the Thompson's algorithm
     1. NFA to DFA: 
@@ -89,6 +89,6 @@ STRING VAR EQ CONST SEMICOLON
 2. `DFA.py`
     - Defined on `Defined on `automata_and_re/DFA.py`
     - It is basically the NFA, but with small changes to the transiction function
-    
+
 
 ---
