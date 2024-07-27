@@ -59,11 +59,11 @@ STRING VAR EQ CONST SEMICOLON
 - `converters`: This directory has all the functions regarding the translations necessary for the implementation of the lexical analyser. Such translations are listed bellow:
     1. regular expressions to NFA (defined on `er_2_nfa.py`):
         - receives all the regular expressions that are defined on `re.csv` and return a single NFA for it.
-        - The NFA itself is them written into a file `NFA.txt` that describes it.
+        - The parameters of the NFA are them written into a file `outputs/NFA.csv` that describes it.
         - It make such convertion using the Thompson's algorithm
     1. NFA to DFA: 
-        - Receives a NFA and returns a DFA (defined on `er_2_dfa.py`)
-        - The resulting DFA is then written into `DFA.txt`
+        - Receives a NFA and returns a DFA (defined on `nfa_2_dfa.py`)
+        - The resulting DFA is then written into `DFA.csv`
 - `lexicalAnalyserA.py`:
     - It executs the lexical analyser itself
     - If `DFA.txt` is not empty, then it uses the DFA defined there.
@@ -87,7 +87,7 @@ STRING VAR EQ CONST SEMICOLON
     - `f`: `[INT]`
         - A list of integers that represent the set of final states
 2. `DFA.py`
-    - Defined on `Defined on `automata_and_re/DFA.py`
+    - Defined on Defined on `automata_and_re/DFA.py`
     - It is basically the NFA, but with small changes to the transiction function
 
 
