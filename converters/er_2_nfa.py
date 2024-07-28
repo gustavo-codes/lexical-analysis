@@ -6,7 +6,19 @@ and it says if it is really an input symboll or just a character that
 makes part of the syntax of a regular expression, like "[", or "+"
 """
 def isOperand(er_symboll):
-	return
+	lower_case_alphabet=[chr(i) for i in range(ord('a'), ord('z')+1)]
+	upper_case_alphabet=[chr(i) for i in range(ord('A'), ord('Z')+1)]
+	numbers = [chr(i) for i in range(0,10)]
+	other_operands = ['_','=','+','-','*',';']
+	all_operands = []
+	all_operands.extend(lower_case_alphabet)
+	all_operands.extend(upper_case_alphabet)
+	all_operands.extend(numbers)
+	all_operands.extend(other_operands)
+	if (er_sybmboll in all_operands):
+		return True
+	return False
+	
 """
 The three next functions express the Thompson's algorithm
 """
