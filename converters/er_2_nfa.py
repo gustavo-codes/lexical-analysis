@@ -15,7 +15,7 @@ def isOperand(er_symboll):
 	all_operands.extend(upper_case_alphabet)
 	all_operands.extend(numbers)
 	all_operands.extend(other_operands)
-	if (er_sybmboll in all_operands):
+	if (er_symboll in all_operands):
 		return True
 	return False
 	
@@ -38,3 +38,34 @@ def prepareList(er, resultingNFA, stateCounter):
 			resultingNFA.addInputStrAlphabet(er[i])
 		else :
 			lista_er.append(er[i])
+
+"""
+Recieves a stack and do one of the three Regular Expressions operations
+a = {
+	0:{'0':{1}, '1':{1}},
+	1:{'0':{0}, '1':{2}},
+	2:{'0':{1}, '1':{0}}
+}
+b = {
+	0:{'0':{2}, '1':{1}},
+	1:{'0':{1}, '1':{2}},
+	2:{'0':{1}, '1':{0}}
+}
+
+a.b = {
+	0:{'0':{1}, '1':{1}},
+	1:{'0':{0}, '1':{2}},
+	2:{'0':{1}, '1':{0}, '':{3}}
+	3:{'0':{5}, '1':{4}},
+	4:{'0':{4}, '1':{5}},
+	5:{'0':{4}, '1':{3}}
+}
+"""
+def erToNFA(stack):
+	symbol = stack.pop()
+	if(symbol == '.'):
+		afn1 = stack.pop()
+		afn2 = stack.pop()
+		afn = afn1
+
+	
