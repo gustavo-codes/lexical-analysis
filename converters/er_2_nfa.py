@@ -1,4 +1,23 @@
 from ..automata_and_re import NFA
+from collections import deque
+
+class operator:
+	def __init__(self, operator):
+		if (operator == '|'):
+			self.symbol = '|'
+			self.priority = 3
+		elif (operator == '.'):
+			self.symbol = '.'
+			self.priority = 2
+		elif (operator == '*'):
+			self.symbol == '*'
+			self.priority = 1
+		elif (operator == '('):
+			self.symbol = '('
+			self.priority = 0
+		elif (operator == ')'):
+			self.symbol = ')'
+			self.priority = 0
 
 """
 It receives as input a character that make part of a regular expression
@@ -18,7 +37,36 @@ def isOperand(er_symboll):
 	if (er_symboll in all_operands):
 		return True
 	return False
-	
+
+def shuntingYard(er_expression):
+	output_queue = []
+	operator_queue = deque() #creates list with stack methods
+	for i in range (len(er_expression)):
+		#if the character is an operand
+		if (isOperand(er_expression[i])):
+			output_queue.append(er_expression)
+		#if the character is other thing
+		else:
+			operatorObj = operator(er_expression[i])
+			while ((operator_queue) and (operator_queue[-1].symbol != '(') and (operator_queue[-1].priority >= operatorObj.priority)):
+				output_queue.append(operator_queue[-1].symbol)
+				operator_queue.pop()
+				operator_queue.append(operatorObj)
+			if operatorObj.symbol == '(':
+				operator_queue.append(operatorObj)
+			elif operatorObj.symbol == ')':
+				while (operator_queue) and (operator_queue[-1].symbol != '('):
+					output_queue.append(operator_queue[-1].symbol)
+					operator_queue.pop()
+					if (operator_queue[-1].symbol == "("):
+						#output_queue.append(operator_queue[-1].symbol) we don't do this
+						operator_queue.pop() #discard the left parenthesis
+		while operator_queue :
+			if (operator_queue.symbol != '('):
+				output_queue.append(operator_queue[-1].symbol)
+			operator_queue.pop()
+		return output_queue
+
 """
 The three next functions express the Thompson's algorithm
 """
