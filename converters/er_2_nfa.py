@@ -112,19 +112,35 @@ a.b = {
 def erToNFA(stack):
 	symbol = stack.pop()
 	if(symbol == '.'):
-		afn1 = stack.pop()
 		afn2 = stack.pop()
-		afn = afn1
-		afn.delta[afn.f][''] = afn2.q0 + len(afn.q) #Create an epsilon transition from AFN1 f to AFN2 q0
+		afn1 = stack.pop()
 		
-		#Do a shift in AFN2 states and add they to AFN delta
-		shift = len(afn) 
-		for i in afn2:
-			for j in afn2[i]:
+		afn = afn1
+		
+		shift = len(afn.delta) #This is the shift factor for all AFN2 states index
+		#Create an epsilon transition from all AFN end states to AFN2 q0
+		for i in afn.f:
+			afn.delta[i][''] = afn2.q0 + shift 
+
+		#Do a shift in all AFN2 states index and add they into AFN delta and add all AFN2 states to AFN.q
+		for i in afn2.delta:
+			for j in afn2.delta[i]:
 				newset = set()
-				for k in afn2[i][j]:
+				for k in afn2.delta[i][j]:
 					newset.add(k+shift)
-				afn2[i][j] = newset
-			afn[i+shift] = afn2[i]
+				afn2.delta[i][j] = newset
+			afn.delta[i+shift] = afn2.delta[i]
+			afn.q.add(i+shift) 
+		
+		afn.f = set()
+		for i in afn2.f:
+			afn.f.add(i+shift)  #Resulting AFN end states are AFN2 end states
+
+		#Finally add the new AFN to the stack	
+		stack.append(afn)
+	elif(symbol == '|'):
+		afn2 = stack.pop()
+		afn1 = stack.pop()
+		afn = {}
 			
 	
