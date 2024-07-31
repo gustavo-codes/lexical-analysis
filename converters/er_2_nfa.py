@@ -141,6 +141,6 @@ def erToNFA(stack):
 	elif(symbol == '|'):
 		afn2 = stack.pop()
 		afn1 = stack.pop()
-		afn = {}
+		afn = NFA.NFA()
 			
 	
