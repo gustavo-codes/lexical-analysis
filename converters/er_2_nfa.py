@@ -103,7 +103,7 @@ b = {
 a.b = {
 	0:{'0':{1}, '1':{1}},
 	1:{'0':{0}, '1':{2}},
-	2:{'0':{1}, '1':{0}, '':{3}}
+	2:{'0':{1}, '1':{0}, '':{3}},
 	3:{'0':{5}, '1':{4}},
 	4:{'0':{4}, '1':{5}},
 	5:{'0':{4}, '1':{3}}
@@ -115,5 +115,16 @@ def erToNFA(stack):
 		afn1 = stack.pop()
 		afn2 = stack.pop()
 		afn = afn1
-
+		afn.delta[afn.f][''] = afn2.q0 + len(afn.q) #Create an epsilon transition from AFN1 f to AFN2 q0
+		
+		#Do a shift in AFN2 states and add they to AFN delta
+		shift = len(afn) 
+		for i in afn2:
+			for j in afn2[i]:
+				newset = set()
+				for k in afn2[i][j]:
+					newset.add(k+shift)
+				afn2[i][j] = newset
+			afn[i+shift] = afn2[i]
+			
 	

@@ -29,7 +29,7 @@ class NFA:
         if (inGoingState not in self.q):
             self.q.append(inGoingState)
 
-    def addInputStrAlphabet(inputStr):
+    def addInputStrAlphabet(self,inputStr):
         if inputStr not in self.sigma:
             self.sigma.append(inputStr)
 
