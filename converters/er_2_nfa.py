@@ -110,36 +110,44 @@ a.b = {
 }
 """
 
+#Do a shift in targetAutomata states in transitions and add them to resultingAutomata
+def shiftStates(shift, resultingAutomata, targetAutomata):
+	for i in targetAutomata.delta:
+		for j in targetAutomata.delta[i]:
+			newset = set()
+			for k in targetAutomata.delta[i][j]:
+				newset.add(k+shift)
+			targetAutomata.delta[i][j] = newset
+		resultingAutomata.delta[i+shift] = targetAutomata.delta[i]
+		resultingAutomata.q.add(i+shift)
+
+#Connect all targetAutomata end states to targetState on resultingAutomata with epsilon 
+def updateEndStates(shift,targetState,resultingAutomata,targetAutomata):
+		for i in targetAutomata.f:
+			newset = set()
+			newset.add(targetState)
+			if(targetAutomata.delta[i].get('')): #Check if already have an epsilon transition in this state, if have, make an union
+				resultingAutomata.delta[i+shift][''] = newset | targetAutomata.delta[i]['']
+			else:
+				resultingAutomata.delta[i+shift][''] = newset
+
+
 #Reduce the stack applying one operation
 def erToNFAs(stack):
 	symbol = stack.pop()
 	if(symbol == '.'):
 		afn2 = stack.pop()
 		afn1 = stack.pop()
-		
 		afn = afn1
 		afn.sigma |= afn2.sigma 
 		
 		shift = len(afn.delta) #This is the shift factor for all AFN2 states index
 		#Create an epsilon transition from all AFN end states to AFN2 q0
-		for i in afn.f:
-			newset = set()
-			newset.add(afn2.q0 + shift)
-			if(afn.delta[i].get('')): #Check if already have an epsilon transition in this state, if have, make an union
-				afn.delta[i][''] = newset | afn.delta[i]['']
-			else:
-				afn.delta[i][''] = newset
+		updateEndStates(0,afn2.q0 + shift,afn,afn)
 
 		#Renaming States
 		#Do a shift in all AFN2 states index and add they into AFN delta and add all AFN2 states to AFN.q
-		for i in afn2.delta:
-			for j in afn2.delta[i]:
-				newset = set()
-				for k in afn2.delta[i][j]:
-					newset.add(k+shift)
-				afn2.delta[i][j] = newset
-			afn.delta[i+shift] = afn2.delta[i]
-			afn.q.add(i+shift) 
+		shiftStates(shift,afn,afn2)
 		
 		afn.f = set()
 		for i in afn2.f:
@@ -152,90 +160,41 @@ def erToNFAs(stack):
 		afn1 = stack.pop()
 		newfinal = len(afn1.q)+len(afn2.q)+1
 		afn = NFA.NFA({0,newfinal},afn1.sigma|afn2.sigma,{},0,{newfinal})
-
 		shift = len(afn1.q)
-		
-		for i in afn1.q:
-			afn.q.add(i+1)
-
-		for i in afn2.q:
-			afn.q.add(i+shift+1)
-
 		afn.delta[0] = {'':{afn1.q0+1,afn2.q0+shift+1}} #Create two epsilon transitions from AFN q0 to AFN1 and AFN2 initial states 
 
 		#Renaming States
 		#First we update ANF1 states index by applying a +1 shift on it, becouse now we have a new q0 state
-		for i in afn1.delta:
-			for j in afn1.delta[i]:
-				newset = set()
-				for k in afn1.delta[i][j]:
-					newset.add(k+1)
-				afn1.delta[i][j] = newset
-			afn.delta[i+1] = afn1.delta[i]
+		shiftStates(1,afn,afn1)
 
 		#Renaming States
 		#Then update ANF2 states index shifting they +shift+1
-		for i in afn2.delta:
-			for j in afn2.delta[i]:
-				newset = set()
-				for k in afn2.delta[i][j]:
-					newset.add(k+shift+1)
-				afn2.delta[i][j] = newset
-			afn.delta[i+shift+1] = afn2.delta[i]
+		shiftStates(shift+1,afn,afn2)
 			
 		afn.delta[newfinal] = {} #Add newfinal state to transitions dictionary
 		
-		#Now crate epsilon transitions from AFN1 and AFN2 fend states to AFN new end state
+		#Now crate epsilon transitions from AFN1 and AFN2 end states to AFN new end state
 		#Notice tha ANF1 and AFN2 lists of end states are not updated, thats why whe shift on getting transitions
-		for i in afn1.f:
-			newset = set()
-			newset.add(newfinal)
-			if(afn1.delta[i].get('')): #Check if already have an epsilon transition in this state, if have, make an union
-				afn.delta[i+1][''] = newset | afn1.delta[i]['']
-			else:
-				afn.delta[i+1][''] = newset
+		updateEndStates(1,newfinal,afn,afn1)
+		updateEndStates(shift+1,newfinal,afn,afn2)
 
-		for i in afn2.f:
-			newset = set()
-			newset.add(newfinal)
-			if(afn2.delta[i].get('')): #Check if already have an epsilon transition in this state, if have, make an union
-				afn.delta[i+shift+1][''] = newset | afn2.delta[i]['']
-			else:
-				afn.delta[i+shift+1][''] = newset
 		stack.append(afn)
 	elif(symbol == '*'):
 		afn1 = stack.pop()
 		newfinal = len(afn1.delta)+1
 		afn = NFA.NFA({0,newfinal},afn1.sigma,{},0,{newfinal})
-
 		afn.delta[0] = {'':{afn1.q0+1,newfinal}} #Create two epsilon transitions from AFN q0 to AFN1 q0
-	
-		for i in afn1.q:
-			afn.q.add(i+1)
 
 		#Renaming States
 		#+1 shift
-		for i in afn1.delta:
-			for j in afn1.delta[i]:
-				newset = set()
-				for k in afn1.delta[i][j]:
-					newset.add(k+1)
-				afn1.delta[i][j] = newset
-			afn.delta[i+1] = afn1.delta[i]
-		
+		shiftStates(1,afn,afn1)
 
 		afn.delta[newfinal] = {'':{afn1.q0+1}} #Add newfinal state to transitions dictionary
 
 		#Create an epsilon transition from all AFN1 end states to AFN end state
-		for i in afn1.f:
-			newset = set()
-			newset.add(newfinal)
-			if(afn1.delta[i].get('')): #Check if already have an epsilon transition in this state, if have, make an union
-				afn.delta[i+1][''] = newset | afn1.delta[i]['']
-			else:
-				afn.delta[i+1][''] = newset
+		updateEndStates(1,newfinal,afn,afn1)
 		stack.append(afn)
-	
+
 def erToNFA(er):
 	stack = []
 	listaER = prepareList(er)
