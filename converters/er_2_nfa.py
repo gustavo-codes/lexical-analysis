@@ -109,13 +109,16 @@ a.b = {
 	5:{'0':{4}, '1':{3}}
 }
 """
-def erToNFA(stack):
+
+#Reduce the stack applying one operation
+def erToNFAs(stack):
 	symbol = stack.pop()
 	if(symbol == '.'):
 		afn2 = stack.pop()
 		afn1 = stack.pop()
 		
 		afn = afn1
+		afn.sigma |= afn2.sigma 
 		
 		shift = len(afn.delta) #This is the shift factor for all AFN2 states index
 		#Create an epsilon transition from all AFN end states to AFN2 q0
@@ -148,7 +151,7 @@ def erToNFA(stack):
 		afn2 = stack.pop()
 		afn1 = stack.pop()
 		newfinal = len(afn1.q)+len(afn2.q)+1
-		afn = NFA.NFA({0,newfinal},afn1.sigma,{},0,{newfinal})
+		afn = NFA.NFA({0,newfinal},afn1.sigma|afn2.sigma,{},0,{newfinal})
 
 		shift = len(afn1.q)
 		
@@ -233,3 +236,13 @@ def erToNFA(stack):
 				afn.delta[i+1][''] = newset
 		stack.append(afn)
 	
+def erToNFA(er):
+	stack = []
+	listaER = prepareList(er)
+	for i in listaER:
+		if not i == ')':
+			stack.append(i)
+		else:
+			erToNFAs(stack)
+			stack.pop(-2) #Delete the remaining '('
+	return stack
