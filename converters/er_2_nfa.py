@@ -79,13 +79,30 @@ since the number of states are unknown, it is needed to save
 the amount of states, so that we can name each state, that's why
 "stateCounter" is useful.
 """
-def prepareList(er, resultingNFA, stateCounter):
-	lista_er = []
-	for i in range(len(er)):
-		if isOperand(er[i]) :
-			resultingNFA.addInputStrAlphabet(er[i])
-		else :
-			lista_er.append(er[i])
+def charToNFA(char):
+	trans = {
+		0:{char:{1}},
+		1:{}
+	}
+	nfa = NFA.NFA({0,1},{char},trans,0,{1})
+	return nfa
+
+
+def isER(char):
+	op = ['*','.','|','(',')']
+	for i in op:
+		if char == i:
+			return False
+	return True
+
+def prepareList(list):
+	newlist = []
+	for i in list:
+		if isER(i):
+			newlist.append(charToNFA(i))
+		else:
+			newlist.append(i)
+	return newlist
 
 """
 Recieves a stack and do one of the three Regular Expressions operations
