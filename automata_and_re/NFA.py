@@ -50,6 +50,6 @@ transitions = {
     2: {'0': {1}, '1': {2}}
 }
 
-nfa = NFA({0, 1, 2}, {'0', '1'}, transitions, 0, {0})
+# nfa = NFA({0, 1, 2}, {'0', '1'}, transitions, 0, {0})
 
-print(nfa.accepts('1011101')) 
+# print(nfa.accepts('1011101')) 
