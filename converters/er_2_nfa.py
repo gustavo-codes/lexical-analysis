@@ -216,9 +216,10 @@ def erToNFA(er):
 	stack = []
 	listaER = prepareList(er)
 	for i in listaER:
-		if not i == ')':
+		if type(i) != type('|'):
 			stack.append(i)
 		else:
+			stack.append(i)
 			erToNFAs(stack)
-			stack.pop(-2) #Delete the remaining '('
+			# stack.pop(-2) #Delete the remaining '('
 	return stack
