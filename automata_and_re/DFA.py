@@ -9,8 +9,11 @@ class DFA:
     def accepts(self, entrada):
         state = self.q0
         for i in entrada:
-            state = self.delta[state][i]
-        return state in self.f
+            try:
+                state = self.delta[state][i]
+            except KeyError:
+                state = ''
+        return state in self.f  
 
 
 """ 

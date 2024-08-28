@@ -1,5 +1,5 @@
-from  dfa import DFA
-from nfa import NFA
+from automata_and_re import NFA
+from automata_and_re import DFA
 
 
 def nfa_to_dfa(nfa: NFA) -> DFA:
@@ -54,7 +54,7 @@ def nfa_to_dfa(nfa: NFA) -> DFA:
         for state, transitions in dfa_delta.items()
     }
 
-    return DFA(dfa_q, dfa_sigma, dfa_delta_mapped, dfa_q0, dfa_f)
+    return DFA.DFA(dfa_q, dfa_sigma, dfa_delta_mapped, dfa_q0, dfa_f)
 
 """ 
 transitions_nfa = {

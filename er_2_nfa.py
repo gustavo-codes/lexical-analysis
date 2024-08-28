@@ -1,4 +1,4 @@
-from ..automata_and_re import NFA
+from automata_and_re import NFA
 from collections import deque
 
 class operator:
