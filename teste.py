@@ -222,24 +222,84 @@ nfa = nfaUnion(listNFA)
 # printAutomata(nfa)
 
 
-for i in nfa.accepts('-'):
-	print(endStatesMap[i])
+# for i in nfa.accepts('-'):
+# 	print(endStatesMap[i])
 
 #Daqui pra cima tá bom
 
 dfa = nfa_2_dfa.nfa_to_dfa(nfa)
 
-tokens = list()
-endState = dfa.accepts('01010')
-for i in endState:
-	if(i in endStatesMap.keys()):
-		tokens.append(endStatesMap[i])
+# tokens = list()
+# endState = dfa.accepts('01010')
+# for i in endState:
+# 	if(i in endStatesMap.keys()):
+# 		tokens.append(endStatesMap[i])
 
-if(len(tokens) == 0):
-	print('ERRO')
+# if(len(tokens) == 0):
+# 	print('ERRO')
+# else:
+# 	print(tokens[0])
+
+inputFile = open("input.txt","r")
+outputFile = open("output.txt","w")
+input = inputFile.readlines()
+lines = [line.rstrip('\n') for line in input]
+err = False
+inputFile.close()
+
+outputLines = list()
+for i in lines:
+	entryes = i.split(' ')
+	output = list()
+	for j in entryes:
+		tokens = list()
+		endState = dfa.accepts(j)
+		for k in endState:
+			if(k in endStatesMap.keys()):
+				tokens.append(endStatesMap[k])
+
+		if len(i) != 0:
+			if len(tokens) == 0 :
+				err = True
+			else:
+				output.append(tokens[0])
+	outputLines.append(output)
+
+if(err):
+	outputFile.write('ERRO')
 else:
-	print(tokens[0])
+	for i in outputLines:
+		line = i
+		line.append('\n')
+		for j in range(len(line) -1):
+			line[j] += ' '
+		outputFile.writelines(line)
 
+
+
+
+# output = list()
+# for i in entryes:
+# 	tokens = list()
+# 	endState = dfa.accepts(i)
+# 	for j in endState:
+# 		if(j in endStatesMap.keys()):
+# 			tokens.append(endStatesMap[j])
+
+# 	if(len(tokens) == 0):
+# 		output.append('ERRO')
+# 	else:
+# 		output.append(tokens[0])
+		
+
+
+# if 'ERRO' in output:
+# 	outputFile.writelines('ERRO')
+# else:
+# 	for i in output:
+# 		outputFile.writelines(i + " ")
+
+outputFile.close()
 # print(newSet)
 #printAutomata(dfa)
 # print(nfa_2_dfa.nfa_to_dfa(nfa).accepts('int'))

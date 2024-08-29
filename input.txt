@@ -1,0 +1,6 @@
+int a = 2 ;
+int b = 4 ;
+string pedro = "Pedro" ;
+int soma = a + b * c - 2 ;
+
+int c = a - b ;
