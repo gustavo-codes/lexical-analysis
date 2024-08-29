@@ -26,9 +26,9 @@ def lexicalAnalisys():
 
     outputLines = list()
     for i in lines:
-        entryes = i.split(' ')
+        entries = i.split(' ')
         output = list()
-        for j in entryes:
+        for j in entries:
             tokens = list()
             if j != '':
                 endState = dfa.accepts(j)
