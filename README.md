@@ -1,6 +1,6 @@
-# Analizador Léxico
-Ele tem a função de ler um código na linguagem A especificada abaixo e verificar se há algum erro léxico. Após verificar de que não há nenhum erro lexico, ele retorna os tokens dá linguagem que servirão mais tarde como entrada de um analizador sintático.
-## A liguagem
+# Analisador Léxico
+Ele tem a função de ler um código na linguagem A especificada abaixo e verificar se há algum erro léxico. Após verificar de que não há nenhum erro lexico, ele retorna os tokens dá linguagem que servirão mais tarde como entrada de um analisador sintático.
+## A linguagem
 A Linguagem A é definida a partir da Linguagem C, as características da A são:
 - Possui apenas os tipos de dados int e string;
 - Não possui laços de repetição e nem condicionais;
@@ -42,8 +42,8 @@ INT ID EQ_OP ID SUB_OP ID SEMICOLON
 ```
 
 ## Tokens
-Os tokens dentro do código são representados em forma pós-fixa e sem parenteses. Por exemplo, a expressão regular $(i\cdot n)\cdot t$ é representada $in\cdot t \cdot $. Os tokens e o que eles representam podem ser encontrados no arquivo `tokens.txt`
-| Token    | Expressão Regular (Formato pós-fixo sem parenteses) |
+Os tokens dentro do código são representados em forma pós-fixa e sem parênteses. Por exemplo, a expressão regular $(i\cdot n)\cdot t$ é representada $in\cdot t \cdot $. Os tokens e o que eles representam podem ser encontrados no arquivo `tokens.txt`
+| Token    | Expressão Regular (Formato pós-fixo sem parênteses) |
 | -------- | ------- |
 | INT  |   in.t.  |
 | STRING | st.r.i.n.g.   |
@@ -62,7 +62,7 @@ Os tokens dentro do código são representados em forma pós-fixa e sem parentes
 O arquivo `er_2_nfa.py` contém o algorítmo que converte uma expressão regular em um autômato finito não deterministico baseado no [Algoritmo de Thompson](https://pt.wikipedia.org/wiki/Algoritmo_de_Thompson#:~:text=Em%20ci%C3%AAncia%20da%20computa%C3%A7%C3%A3o%2C%20Algoritmo,casar%20palavras%20com%20express%C3%B5es%20regulares.). Ele usa a função `assemble()` para juntar todos os autômatos de cada expressão regular em um só.
 
 ## Conversão de NFA para DFA
-A conversão de autômato finito não deterministico para deterministico é feita no arquivo `nfa_2_dfa.py`.
+A conversão de autômato finito não determinístico para determinístico é feita no arquivo `nfa_2_dfa.py`.
 
 ## A análise léxica
 É feita no arquivo `lexicalAnalyserA.py`. Ela consiste em chamar a função `assemble()` para montar o autômato e converter esse NFA para DFA. Tendo esse autômato em mãos, basta que, para cada palavra da entrada, o autômato faça a computação da mesma. Após essa computação ele consulta a tabela de estados finais:
@@ -88,8 +88,3 @@ O DFA retorna um estado que é um conjunto de estados do NFA original. O analisa
 
 ### Ambiguidade
 A ambiguidade ocorre apenas em dois casos, quando lemos `string` ou `int`, pois essas palavras podem ser tanto identificadores quando as palavras reservadas. Para resolver isso basta sempre que cair nesse caso, escrever o token das palavras reservadas já que elas tem precedência sobre o identificador.
-
-
-
-
-
