@@ -1,0 +1,12 @@
+INT representa a palavra reservada int
+STRING representa a palavra reservada string
+EQ OP representa o operador de igualdade
+SUM_OP representa o operador de soma
+MULT_OP representa o operador de multiplicação
+SUB_OP representa o operador de subtração
+SEMICOLON representa o ponto e vírgula
+ID representa um identificador, ou seja, o nome de alguma variável
+NUM representa literais inteiros
+CONST representa uma string literal entre aspas duplas
+GREATER_OP representa o operador de maior quê
+LESS_OP 'representa o operador de menor quê
