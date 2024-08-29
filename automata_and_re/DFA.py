@@ -13,7 +13,7 @@ class DFA:
                 state = self.delta[state][i]
             except KeyError:
                 state = ''
-        return state in self.f  
+        return state #in self.f  
 
 
 """ 

@@ -38,21 +38,18 @@ def isER(char):
 			return False
 	return True
 
-#Make an union an save every er end state
-def nfaUnion(list):
-	endStates = {
-		'INT':{},
-		'CONST':{},
-		'EQ' :{},
-		'ADD' :{},
-		'MULT':{} ,
-		'SEMICOLON':{},
-		'ID':{},
-		'NUMBER':{},
-		'STRING':{}}
-
+def token(list):
+	if len(list) == 0:
+		return list[0]
+	else:
+		if list[0] == 'INT':
+			return list[0]
+		if list[0] == 'CONST':
+			return list[0]
 	
 
+#Make an union an save every er end state
+def nfaUnion(list):
 	nfa = NFA.NFA({0},set(),{0:{'':set()}},0, set())
 	count = 1
 
@@ -179,42 +176,9 @@ def erToNFA(er):
 			erToNFAs(stack)
 			# stack.pop(-2) #Delete the remaining '('
 	return stack[-1]
-	
-a = {
-	0:{'a':{1}},
-	1:{}
-}
-
-b = {
-	0:{'b':{1}},
-	1:{}
-}
-
-c = {
-	0:{'c':{1}},
-	1:{}
-}
-
-d = {
-	0:{'d':{1}},
-	1:{}	
-}
-
-nfa1 = NFA.NFA({0,1},{'a'},a,0,{1})
-nfa2 = NFA.NFA({0,1},{'b'},b,0,{1})
-nfa3 = NFA.NFA({0,1},{'c'},c,0,{1})
-nfa4 = NFA.NFA({0,1},{'d'},d,0,{1})
-
-#ers = ['(','(',nfa1,nfa2,'.',')','(','(',nfa3,nfa4,'|',')','*',')','|',')']
-#ers = ['(','(','(',nfa1,nfa2,'|',')',nfa3,'|',')',nfa4,'|',')']
-#ers = ['(','(','(','(',nfa1,nfa2,'.',')',nfa3,'.',')',nfa4,'.',')','*',')']
-#ers = ['(','(',nfa1,nfa2,'|',')','(	',nfa3,nfa4,'|',')','.',')']
-#ers = ['(','(','(',nfa1,nfa2,'.',')','*',')','(',nfa3,nfa4,'.',')','|',')']
-ers = ['(','(','a','b','|',')','*',')']
-
 
 inter = 'in.t.'
-conster = 'st.r.i.n.g.'
+stringer = 'st.r.i.n.g.'
 eqer = '='
 adder = '+'
 multer = '*'
@@ -222,46 +186,64 @@ suber = '-'
 semicoloner = ';'
 ider = '_ab|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z||AB|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z||_ab|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z||AB|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z||01|2|3|4|5|6|7|8|9||?.'
 numer = '01|2|3|4|5|6|7|8|9|01|2|3|4|5|6|7|8|9|?.'
-stringer = '\"ab|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|?AB|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|?.01|2|3|4|5|6|7|8|9|?.*?.-?.+?.=?.;?._?.?.\".'
-
-listER = [inter, conster ,eqer , adder ,multer ,semicoloner,ider,numer,stringer]
-final = inter + conster + '|' + eqer + '|' + adder + '|' + multer + '|' + semicoloner + '|' + ider + '|' + numer + '|' + stringer + '|'
-intER = ['(','(','i','n','.',')','t','.',')']
-stringER = ['(','(','(','(','(','s','t','.',')','r','.',')','i','.',')','n','.',')','g','.',')']
-exemple = inter + conster + '|'
+conster = '\"ab|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|?AB|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|?.01|2|3|4|5|6|7|8|9|?. ?.<?.>?.*?.-?.+?.=?.;?._?.?.\".'
+greaterer = '>'
+lesser = '<'
 
 endStatesMap = {
 	6:'INT',
-	18: 'CONST',
+	18: 'STRING',
 	566: 'NUM',
 	488: 'ID',
-	844: 'STRING',
+	856: 'CONST',
 	26: 'SEMICOLON',
 	22: 'SUM_OP',
 	20: 'EQ_OP',
 	24: 'MULT_OP',
-	846: 'SUB_OP',
+	858: 'SUB_OP',
+	860: 'GREATER_OP',
+	862: 'LESS_OP'
+
 }
 
-intNFA = erToNFA(inter)
-constNFA = erToNFA(conster)
-eqNFA = erToNFA(eqer)
-addNFA = erToNFA(adder)
-multNFA = erToNFA(multer)
-semicolonNFA = erToNFA(semicoloner)
-idNFA = erToNFA(ider)
-numNFA = erToNFA(numer)
-stringNFA = erToNFA(stringer)
+# intNFA = erToNFA(inter)
+# constNFA = erToNFA(conster)
+# eqNFA = erToNFA(eqer)
+# addNFA = erToNFA(adder)
+# multNFA = erToNFA(multer)
+# semicolonNFA = erToNFA(semicoloner)
+# idNFA = erToNFA(ider)
+# numNFA = erToNFA(numer)
+# stringNFA = erToNFA(stringer)
 
-listNFA = [erToNFA(inter),erToNFA(conster),erToNFA(eqer),erToNFA(adder),erToNFA(multer),erToNFA(semicoloner),erToNFA(ider),erToNFA(numer),erToNFA(stringer),erToNFA(suber)]
+listNFA = [erToNFA(inter),erToNFA(stringer),erToNFA(eqer),erToNFA(adder),erToNFA(multer),erToNFA(semicoloner),erToNFA(ider),erToNFA(numer),erToNFA(conster),erToNFA(suber),erToNFA(greaterer),erToNFA(lesser)]
 
 nfa = nfaUnion(listNFA)
-printAutomata(nfa)
+# printAutomata(nfa)
 
-for i in nfa.accepts('"Ola"'):
+
+for i in nfa.accepts('-'):
 	print(endStatesMap[i])
 
+#Daqui pra cima tá bom
 
+dfa = nfa_2_dfa.nfa_to_dfa(nfa)
+
+tokens = list()
+endState = dfa.accepts('01010')
+for i in endState:
+	if(i in endStatesMap.keys()):
+		tokens.append(endStatesMap[i])
+
+if(len(tokens) == 0):
+	print('ERRO')
+else:
+	print(tokens[0])
+
+# print(newSet)
+#printAutomata(dfa)
+# print(nfa_2_dfa.nfa_to_dfa(nfa).accepts('int'))
+# printAutomata(dfa)
 #482 ID 559 NUM
 # printAutomata(erToNFA(inter))
 # printAutomata(erToNFA(exemple))

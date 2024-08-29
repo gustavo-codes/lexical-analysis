@@ -1,5 +1,5 @@
-from automata_and_re import NFA
 from automata_and_re import DFA
+from automata_and_re import NFA
 
 
 def nfa_to_dfa(nfa: NFA) -> DFA:
@@ -41,22 +41,23 @@ def nfa_to_dfa(nfa: NFA) -> DFA:
             if next_dfa_state & nfa.f:
                 dfa_accepting_states.add(next_dfa_state)
 
-    # Map DFA states to integers for easier representation
-    state_mapping = {state: idx for idx, state in enumerate(dfa_states)}
+    # Map DFA states to a string that combines NFA state names
+    def state_name(state_set):
+        return state_set
 
-    dfa_q = set(state_mapping.values())
+    dfa_q = {state_name(state) for state in dfa_states}
     dfa_sigma = nfa.sigma
-    dfa_q0 = state_mapping[initial_dfa_state]
-    dfa_f = {state_mapping[state] for state in dfa_accepting_states}
+    dfa_q0 = state_name(initial_dfa_state)
+    dfa_f = {state_name(state) for state in dfa_accepting_states}
     dfa_delta_mapped = {
-        state_mapping[state]: {symbol: state_mapping[next_state]
-                               for symbol, next_state in transitions.items()}
+        state_name(state): {symbol: state_name(next_state)
+                            for symbol, next_state in transitions.items()}
         for state, transitions in dfa_delta.items()
     }
 
     return DFA.DFA(dfa_q, dfa_sigma, dfa_delta_mapped, dfa_q0, dfa_f)
 
-""" 
+"""
 transitions_nfa = {
     'p': {'': {'q', 'r'}},
     'q': {'a': {'q1'}},
@@ -66,7 +67,7 @@ transitions_nfa = {
     'r2': {'a': {'r'}}
 }
 
-nfa = NFA({'p', 'q', 'r', 'q1', 'r1', 'r2'}, {'a'}, transitions_nfa, 'p', {'r2'})
+nfa = NFA.NFA({'p', 'q', 'r', 'q1', 'r1', 'r2'}, {'a'}, transitions_nfa, 'p', {'r2'})
 dfa = nfa_to_dfa(nfa)
 
 print(dfa.accepts('aa')) 
@@ -81,7 +82,7 @@ transitions = {
     'd': {} 
 }
 
-nfa = NFA({'a', 'b', 'c', 'd'}, {'a', 'b', 'c'}, transitions, 'a', {'d'})
+nfa = NFA.NFA({'a', 'b', 'c', 'd'}, {'a', 'b', 'c'}, transitions, 'a', {'d'})
 print(nfa.accepts('abc'))
 print(nfa.accepts('bbcc'))
 print(nfa.accepts('aaabbccccc'))
